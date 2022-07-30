@@ -71,13 +71,32 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        boolean caseSensitive = false;
 
-        for (HashMap<String, String> row : allJobs) {
+        if (value.charAt(0) == '*') {
+            caseSensitive = true;
+            value = value.substring(1);
+        }
 
-            String aValue = row.get(column);
+        if (caseSensitive) {
 
-            if (aValue.toLowerCase().contains(value.toLowerCase())) {
-                jobs.add(row);
+            for (HashMap<String, String> row : allJobs) {
+
+                String aValue = row.get(column);
+
+                if (aValue.contains(value)) {
+                    jobs.add(row);
+                }
+            }
+        } else {
+
+            for (HashMap<String, String> row : allJobs) {
+
+                String aValue = row.get(column);
+
+                if (aValue.toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(row);
+                }
             }
         }
 
@@ -97,17 +116,36 @@ public class JobData {
 
         // TODO - implement this method
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        boolean caseSensitive = false;
 
-        for (HashMap<String, String> listing : allJobs) {
-//            boolean found = false;
+        if (value.charAt(0) == '*') { // toggle case-sensitive with '*' prefix
+            caseSensitive = true;
+            value = value.substring(1);
+        }
+        if (caseSensitive) {
+
+            for (HashMap<String, String> listing : allJobs) {
 
                 for (Map.Entry<String, String> row : listing.entrySet()) {
-                        String aValue = row.getValue();
+                    String aValue = row.getValue();
+                    if (aValue.contains(value)) {
+                        jobs.add(listing);
+                        break;
+                    }
+                }
+            }
+        } else {
+
+            for (HashMap<String, String> listing : allJobs) {
+
+                for (Map.Entry<String, String> row : listing.entrySet()) {
+                    String aValue = row.getValue();
                     if (aValue.toLowerCase().contains(value.toLowerCase())) {
                         jobs.add(listing);
                         break;
                     }
                 }
+            }
         }
 
         return jobs;
